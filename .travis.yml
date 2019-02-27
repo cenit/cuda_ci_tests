@@ -22,12 +22,11 @@ install:
   - wget --no-check-certificate https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz
   - tar -xzf cmake-3.13.4-Linux-x86_64.tar.gz
   - export PATH=$PWD/cmake-3.13.4-Linux-x86_64/bin:$PATH
+  #- export PATH=/usr/local/cuda-10.0/bin:$PATH
   - echo CUDACXX=$CUDACXX
   - ls -l $CUDACXX
   - ls -l /usr/local/cuda-10.0/
   - ls -l /usr/local/cuda-10.0/bin
-  - $CUDACXX -v
-  - $CUDACXX --version
 
 
 before_script:
