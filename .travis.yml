@@ -40,5 +40,5 @@ before_script:
   - cd ..
 
 script:
-  - cd build_debug && cmake --build . --target install && cd ..
-  - cd build_release && cmake --build . --target install && cd ..
+  - cd build_debug && cmake --build . && cd ..
+  - cd build_release && cmake --build . && cd ..

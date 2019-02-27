@@ -35,3 +35,4 @@ else()
 endif()
 
 message(STATUS "CMAKE_CUDA_COMPILER: ${CMAKE_CUDA_COMPILER}")
+message(STATUS "ENV{CUDACXX}: $ENV{CUDACXX}")
