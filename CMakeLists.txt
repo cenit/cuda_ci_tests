@@ -1,5 +1,3 @@
-# To use your libs, launch cmake with -DUSE_INTEGRATED_LIBS:BOOL=FALSE
-
 cmake_minimum_required(VERSION 3.4)
 
 #set(CMAKE_VERBOSE_MAKEFILE 1)
@@ -8,13 +6,7 @@ if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 endif()
 
-project(darknet)
-
-if(WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(USE_INTEGRATED_LIBS "TRUE" CACHE BOOL "Use libs distributed with this repo")
-else()
-  set(USE_INTEGRATED_LIBS "FALSE" CACHE BOOL "Use libs distributed with this repo")
-endif()
+project(cuda_ci_tests)
 
 enable_language(C)
 enable_language(CXX)

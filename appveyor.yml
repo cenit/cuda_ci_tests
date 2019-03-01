@@ -1,0 +1,50 @@
+image: Visual Studio 2017
+clone_folder: c:\projects\cuda_ci_tests
+
+environment:
+    WORKSPACE: C:\projects
+    matrix:
+    - platform: Win64
+      COMPILER: vs
+      VCPKG_ROOT: C:\projects\vcpkg
+      VCPKG_DEFAULT_TRIPLET: x64-windows
+      USE_CUDA: yes
+      CUDACXX: C:\CUDA\bin\nvcc.exe
+      CUDA_PATH: C:\CUDA\
+      CUDA_PATH_V10_0: C:\CUDA\
+
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+install:
+  - cinst cmake ninja
+  - SET "PATH=C:\Program Files\CMake\bin;%PATH%"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  - git submodule -q update --init --recursive
+  - cd %WORKSPACE%\
+  - curl -L https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda_10.0.130_411.31_windows -o cuda_10.0.130_411.31_windows.exe
+  - mkdir C:\CUDATEMP
+  - mkdir C:\CUDA
+  - 7z x cuda_10.0.130_411.31_windows.exe -oC:\CUDATEMP
+  - cd C:\CUDATEMP
+  - FOR /D %%G in ("*") DO xcopy C:\CUDATEMP\%%G\* C:\CUDA\ /s /y
+  - cd %WORKSPACE%\
+  - git clone https://github.com/Microsoft/vcpkg
+  - cd %VCPKG_ROOT%
+  - bootstrap-vcpkg.bat
+  - vcpkg integrate install
+  - vcpkg install cuda
+  - cd %WORKSPACE%\cuda_ci_tests\
+  - mkdir build_debug && cd build_debug
+  - cmake -G "Visual Studio 15 2017" -T "host=x64" -A "x64" "-DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=%VCPKG_DEFAULT_TRIPLET%" -DCMAKE_BUILD_TYPE="Debug" ..
+  - cd ..
+  - mkdir build_release && cd build_release
+  - cmake -G "Visual Studio 15 2017" -T "host=x64" -A "x64" "-DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=%VCPKG_DEFAULT_TRIPLET%" -DCMAKE_BUILD_TYPE="Release" ..
+  - cd ..
+
+build_script:
+  - cd build_debug   && cmake --build . --config Debug   && cd ..
+  - cd build_release && cmake --build . --config Release && cd ..
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
