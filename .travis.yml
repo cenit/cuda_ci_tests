@@ -11,7 +11,7 @@ matrix:
       name: macOS - vcpkg
       env:
         - additional_defines=""
-        - MATRIX_EVAL="brew install gcc && unset CC && unset CXX && sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /"
+        - MATRIX_EVAL="brew install gcc@7 && brew link --overwrite gcc@7 && unset CC && unset CXX"
         - USE_VCPKG=true
         - VCPKG_DEFINES="-DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
