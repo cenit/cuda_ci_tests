@@ -1,4 +1,3 @@
-language: cpp
 cache:
   timeout: 1000
   directories:
