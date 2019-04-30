@@ -9,9 +9,10 @@ matrix:
 
     - os: osx
       name: macOS - vcpkg
+      osx_image: xcode10.1
       env:
         - additional_defines=""
-        - MATRIX_EVAL="brew install gcc@7 && brew link --overwrite gcc@7 && unset CC && unset CXX"
+        - MATRIX_EVAL="brew install gcc && unset CC && unset CXX"
         - USE_VCPKG=true
         - VCPKG_DEFINES="-DCMAKE_TOOLCHAIN_FILE=$HOME/vcpkg/scripts/buildsystems/vcpkg.cmake"
 
