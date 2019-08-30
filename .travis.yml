@@ -18,7 +18,7 @@ matrix:
 
     - os: linux
       compiler: gcc
-      distr: bionic
+      dist: bionic
       name: ubuntu - vcpkg
       addons:
         apt:
@@ -32,7 +32,7 @@ matrix:
         - MATRIX_EVAL=""
 
     - os: linux
-      distr: bionic
+      dist: bionic
       compiler: gcc
       name: ubuntu - CUDA 10 - vcpkg
       addons:
